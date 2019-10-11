@@ -1,3 +1,8 @@
 __pycache__
 postgresql_api.txt
 instance
+em.py
+parse_csv.py
+test.csv
+settings.cfg
+TEST.csv
