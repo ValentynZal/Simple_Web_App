@@ -8,17 +8,20 @@
         <input type="submit" value="Upload">
       </div>
     </form>
-    <form action="POST">
+
+    <form action="{{ url_for('choose') }}" method="POST">
+
       <div class="form-group mt-4">   
         <label for="exampleFormControlFile1">Choose criteria to sort</label>
         <select class="custom-select" multiple>
-          <option value="name">name</option>
-          <option value="sex">sex</option>
-          <option value="city">city</option>
-          <option value="comment">comment</option>
-          <option value="datetime">datetime</option>
+          <option name="sex">sex</option>
+          <option name="city">city</option>
+          <option name="comment">emotion</option>
+          <option name="datetime">month</option>
+          <option name="datetime">time</option>
         </select>
       </div>
+      
       <fieldset class="form-group">
           <div class="row">
             <legend class="col-form-label col-sm-2 pt-0">Choose result type</legend>
@@ -40,8 +43,9 @@
         </fieldset>
       <button type="submit" class="btn btn-primary">Submit</button>
     </form>
+    
     <div class="mt-4">      
-        <a class="btn btn-primary" href="#" role="button">Download</a>
+        <a class="btn btn-primary" href="{{ url_for('download') }}" role="button">Download</a>
     </div>
   </div>
 {% endblock %}
