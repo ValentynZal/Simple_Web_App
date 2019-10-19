@@ -8,6 +8,7 @@ from flask import (
 )
 from werkzeug.utils import secure_filename
 from flaskapp.db import get_db
+from flaskapp.form import ChoiceForm
 
 
 bp = Blueprint('routes', __name__)
@@ -35,11 +36,11 @@ def csv_extracter(filename):
         csv_reader = csv.DictReader(csv_file)
         # next(csv_file)
         for line in csv_reader:
-            sex = line[' sex']
-            city = line[' city']
-            emotion = text_to_emotion(line[' text'])
-            month, time = timestamp_converter(int(line[' timestamp']))
-        yield sex, city, emotion, month, time
+            sex = line['sex']
+            city = line['city']
+            emotion = text_to_emotion(line['text'])
+            month, time = timestamp_converter(int(line['timestamp']))
+            yield sex, city, emotion, month, time
  
 
 @bp.route('/', methods=['GET', 'POST'])
@@ -57,27 +58,38 @@ def index():
         gen = csv_extracter(file.filename)
         db = get_db()
         for row in gen:
+            print(row)
             db.execute(
                 '''INSERT INTO poll (sex, city, emotion, month, poll_time)
                 VALUES (?, ?, ?, ?, ?)''',
-                (row[0], row[1], row[2], row[3], row[4])
+                (row) # row[0], row[1], row[2], row[3], row[4]
             )
             db.commit()
-        # print(db.execute("SELECT * FROM poll WHERE id = 1").fetchone().commit())
         db.close()
-        # print("saved")
-        # return redirect(url_for('page'))
-    return render_template('page.html')
+        print("saved")
+        return redirect(url_for('routes.process'))
+    return render_template('index.html')
 
-@bp.route('/choose', methods=['POST', 'GET'])
-def choose():
-    form = request.form
-    print(form)                         
-    return redirect(url_for('index'))
+@bp.route('/poll-process', methods=['POST', 'GET'])
+def process():
+    form =  ChoiceForm(request.form)
+    if request.method == 'POST':
+        sel1 = request.form.get('sel')
+        print(sel1)
+        db = get_db()
+        req1 = db.execute(
+            'SELECT * FROM poll WHERE sex = ?',
+            (sel1,)   
+        ).fetchall()
+        print(req1)
+        db.close                                        
+        rad = request.form["radio"]   
+        # if rad == 'csv':
+        #     print(6) 
+        # if rad == 'html':
+        #     print(7)                             
+    return render_template('process.html', form=form)
 
-@bp.route('/download', methods=['POST', 'GET'])
-def download():
-    pass
 
 
 

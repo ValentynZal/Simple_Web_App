@@ -6,3 +6,4 @@ parse_csv.py
 test.csv
 settings.cfg
 TEST.csv
+request.sql

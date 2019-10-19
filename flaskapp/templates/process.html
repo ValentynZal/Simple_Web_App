@@ -1,0 +1,27 @@
+<form method="post">
+  <!-- select -->
+  <div class="form-group mt-4">  
+    <h2>Choose criteria to sort</h2>
+    <!-- sex -->
+    <select class="custom-select" name="sel"> <!-- multiple -->       
+      {% for field in form.sel_sex %}
+        <option>{{ field }}</option>    
+      {% endfor %}      
+    </select>
+  <!-- radio -->
+  <div class="form-group mt-4">
+      <div class="row">
+        <legend class="col-form-label col-sm-2 pt-0">Choose result type</legend>
+        <div class="col-sm-10">
+          <div class="form-check">
+              {% for field in form.radio %} 
+                {{ field(class="form-check-input") }}
+                {{ field.label(class="form-check-label") }}
+              {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- submit -->
+    {{form.submit(class="btn btn-primary")}}
+</form>
