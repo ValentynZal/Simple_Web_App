@@ -75,15 +75,13 @@ def process():
     form =  ChoiceForm(request.form)
     if request.method == 'POST':
         sel1 = request.form.get('sel')
-        print(sel1)
         db = get_db()
-        req1 = db.execute(
+        res = db.execute(
             'SELECT * FROM poll WHERE sex = ?',
-            (sel1,)   
+            (sel1, )
         ).fetchall()
-        print(req1)
-        db.close                                        
-        rad = request.form["radio"]   
+        print(res)                                    
+        # rad = request.form["radio"]   
         # if rad == 'csv':
         #     print(6) 
         # if rad == 'html':
