@@ -3,13 +3,31 @@
   <div class="form-group mt-4">  
     <h2>Choose criteria to sort</h2>
     <!-- sex -->
-    <select class="custom-select" name="sel"> <!-- multiple -->       
+    <select class="custom-select" name="sex"> <!-- multiple -->       
       {% for field in form.sel_sex %}
         <option>{{ field }}</option>    
       {% endfor %}      
     </select>
-  <!-- radio -->
-  <div class="form-group mt-4">
+    <!-- city -->
+    <select class="custom-select" name="city"> <!-- multiple -->       
+      {% for field in form.sel_city %}
+        <option>{{ field }}</option>    
+      {% endfor %}      
+    </select>
+    <!-- emotion -->
+    <select class="custom-select" name="emotion"> <!-- multiple -->       
+      {% for field in form.sel_emotion %}
+        <option>{{ field }}</option>    
+      {% endfor %}      
+    </select>  
+    <!-- month -->
+    <select class="custom-select" name="month"> <!-- multiple -->       
+      {% for field in form.sel_month %}
+        <option>{{ field }}</option>    
+      {% endfor %}      
+    </select> 
+    <!-- radio -->
+    <div class="form-group mt-4">
       <div class="row">
         <legend class="col-form-label col-sm-2 pt-0">Choose result type</legend>
         <div class="col-sm-10">

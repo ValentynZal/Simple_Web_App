@@ -62,7 +62,7 @@ def index():
             db.execute(
                 '''INSERT INTO poll (sex, city, emotion, month, poll_time)
                 VALUES (?, ?, ?, ?, ?)''',
-                (row) # row[0], row[1], row[2], row[3], row[4]
+                (row) 
             )
             db.commit()
         db.close()
@@ -74,19 +74,50 @@ def index():
 def process():
     form =  ChoiceForm(request.form)
     if request.method == 'POST':
-        sel1 = request.form.get('sel')
+        sel1 = request.form.get('sex')  
+        sel2 = request.form.get('city')    
+        sel3 = request.form.get('emotion')  
+        sel4 = request.form.get('month')  
+
         db = get_db()
-        res = db.execute(
-            'SELECT * FROM poll WHERE sex = ?',
-            (sel1, )
-        ).fetchall()
-        print(res)                                    
-        # rad = request.form["radio"]   
-        # if rad == 'csv':
-        #     print(6) 
-        # if rad == 'html':
-        #     print(7)                             
+
+        if sel1:
+            res = db.execute(
+                'SELECT * FROM poll WHERE sex = ?',
+                (sel1, )
+            ).fetchall()
+            # print(res) 
+
+        if sel2:
+            res2 = db.execute(
+                'SELECT * FROM poll WHERE city = ?',
+                (sel2, )
+            ).fetchall() 
+            # print(res2)         
+        
+        if sel3:
+            res3 = db.execute(
+                'SELECT * FROM poll WHERE emotion LIKE ?',
+                ('%' + sel3 + '%', ) 
+            ).fetchall() 
+            # print(res3)  
+
+        if sel4:
+            res4 = db.execute(
+                'SELECT * FROM poll WHERE month = ?',
+                (sel4, )
+            ).fetchall()
+            # print(res4) 
+
+        rad = request.form["radio"]   
+
+        if rad == 'csv':
+            print('csv function call') 
+        if rad == 'html':
+            print('html function call')  
+
     return render_template('process.html', form=form)
+
 
 
 
