@@ -1,6 +1,7 @@
 import csv
 import os
 import paralleldots
+from collections import defaultdict
 from datetime import datetime
 from math import floor
 from flask import current_app
@@ -29,46 +30,15 @@ def csv_extracter(filename):
     with open(os.path.join(current_app.config['UPLOAD_FOLDER'], filename), 'r') as csv_file:
         csv_reader = csv.DictReader(csv_file)
         # next(csv_file)
+        res = []
         for line in csv_reader:
+            name = line['name']
             sex = line['sex']
             city = line['city']
             emotion = text_to_emotion(line['text'])
-            month, time = timestamp_converter(int(line['timestamp']))
-            yield sex, city, emotion, month, time
+            month, poll_time = timestamp_converter(int(line['timestamp']))
+            l = [('name',name),('sex',sex),('city',city),('emotion',emotion),('month',month),('poll_time',poll_time)]
+            res.append(dict(l))
+        return res
 
-
-def converter(nested_list):
-    ''' converts list of tuples into list of strings'''
-    lines = []
-    for tupl in nested_list:
-        line = ''
-        for id, item in enumerate(tupl):
-            if id == 0:
-                continue
-            elif id < len(tupl)-1:
-                line += str(item) + ','
-            else:
-                line += str(item)
-        lines.append(line)
-    # print(lines)
-    return lines 
-
-
-def save_as_csv(response):
-    ''' build csv file from response data '''
-    with open('statistics.csv', 'w') as new_file:
-        lines = converter(response)
-        print(lines)
-        for line in lines:
-            new_file.write(line)
-            new_file.write('\n')
-    pass
-
-# os.path.join(current_app.config['DOWNLOAD_FOLDER'],
-response = [
-    (24, 'w', 'Kharkiv', 'Fear: 60%', '10', '15:2:51'), 
-    (29, 'w', 'Kiev', 'Happy: 23%', '10', '18:53:4')
-]
-
-save_as_csv(response)
 
