@@ -42,6 +42,25 @@ def index():
             db.commit()
         db.close()
         print("saved")
-        # return redirect(url_for('routes.process'))
+        return redirect(url_for('routes.process'))
     return render_template('index.html')
 
+@bp.route('/poll-process', methods=['POST', 'GET'])
+def process():
+    form =  ChoiceForm(request.form)
+    if request.method == 'POST':
+        select = request.form.get('sel')  
+        if select:
+            print(select)
+            db = get_db()
+            res = db.execute(
+            '''SELECT username, sex, city, emotion, month, poll_time
+                FROM poll
+                JOIN author
+                    ON poll.author_id = author.id
+                ORDER BY ? ASC''', 
+            (select,)                  
+            ).fetchall()
+            print(res) 
+            db.close
+    return render_template('process.html', form=form)

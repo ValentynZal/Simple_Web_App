@@ -14,7 +14,8 @@ def create_app(test_config=None):
         SECRET_KEY='dev',
         DATABASE=os.path.join(app.instance_path, 'flaskapp.sqlite'),
         # BASE_DIR=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        UPLOAD_FOLDER=os.path.join(os.getcwd(), 'uploads')
+        UPLOAD_FOLDER=os.path.join(os.getcwd(), 'uploads'),
+        DOWNLOAD_FOLDER=os.path.join(os.getcwd(), 'downloads')
         # UPLOAD_FOLDER = '/home/valentyn/Dev/simple_python_web_app/uploads'
     )
 
