@@ -58,8 +58,7 @@ def process():
                 FROM poll
                 JOIN author
                     ON poll.author_id = author.id
-                ORDER BY ? ASC''', 
-            (select,)                  
+                ORDER BY %s''' % (select,)                  
             ).fetchall()
             print(res) 
             db.close
