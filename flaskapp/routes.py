@@ -1,16 +1,19 @@
 
 import os
 from flask import (
-    Blueprint, g, redirect, render_template, request, url_for, flash, current_app, send_file
+    Blueprint, g, redirect, render_template, request, url_for, 
+    flash, current_app, send_file
 )
 from werkzeug.utils import secure_filename
 from flaskapp.db import get_db
 from flaskapp.form import ChoiceForm
-from flaskapp.utils import text_to_emotion, timestamp_converter, csv_extracter 
-
+from flaskapp.utils import (
+    text_to_emotion, timestamp_converter, csv_extracter, 
+    add_author_id 
+)
 
 bp = Blueprint('routes', __name__)
-
+n = 0
 
 @bp.route('/', methods=['GET', 'POST'])
 def index():
@@ -27,17 +30,24 @@ def index():
         dict_list = csv_extracter(file.filename)
         db = get_db()
         for dic in dict_list:
-            print(dic)
+            # print(dic)
             db.execute(
                 '''INSERT INTO author (username, sex)
                 VALUES (?, ?)''',
                 (dic['name'], dic['sex']) 
             )
-            db.commit()
+        poll_id = db.execute(
+                '''SELECT id FROM author''',
+        ).fetchall()
+        # print(poll_id)
+        global n
+        add_author_id(dict_list, poll_id, n)
+        n += len(dict_list)
+        for dic in dict_list:
             db.execute(
-                '''INSERT INTO poll (city, emotion, month, poll_time)
-                VALUES (?, ?, ?, ?)''',
-                (dic['city'], dic['emotion'], dic['month'], dic['poll_time']) 
+                '''INSERT INTO poll (city, emotion, month, poll_time, author_id)
+                VALUES (?, ?, ?, ?, ?)''',
+                (dic['city'], dic['emotion'], dic['month'], dic['poll_time'], dic['author_id']) 
             )
             db.commit()
         db.close()

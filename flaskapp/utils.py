@@ -41,4 +41,9 @@ def csv_extracter(filename):
             res.append(dict(l))
         return res
 
-
+def add_author_id(dict_list, poll_id, n):
+    poll_id = poll_id[n:]
+    get_list = [i[0] for i in poll_id]
+    for i, dic in zip(get_list, dict_list):
+        dic.update({'author_id': i}) 
+    return dict_list

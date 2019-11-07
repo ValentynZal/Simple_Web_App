@@ -14,6 +14,6 @@ CREATE TABLE `poll` (
 	`month`	TEXT NOT NULL,
 	`poll_time`	TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `author_id`	INTEGER,   
-  FOREIGN KEY(`author_id`) REFERENCES `author`
+  FOREIGN KEY(`author_id`) REFERENCES `author`(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
