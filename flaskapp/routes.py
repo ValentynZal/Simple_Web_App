@@ -80,9 +80,23 @@ def process():
         if rad == 'csv':
             print('csv function call') 
             # converter(res)
-            # return redirect(url_for('routes.download'))
+            return redirect(url_for('routes.download_csv'))
         if rad == 'html':
-            print('html function call')  
+            print('html function call') 
+            return redirect(url_for('routes.download_html'))
     return render_template('process.html', form=form)
 
-    
+
+@bp.route('/download-csv',methods=['GET'])
+def download_csv():
+    dirname = os.path.dirname(__file__)
+    filename = os.path.join(dirname, 'downloads/TEST.csv')   
+    # return f'<h1>{filename}</h1>'
+    return send_file(filename, as_attachment=True, attachment_filename='statistics.csv')
+
+@bp.route('/download-html',methods=['GET'])
+def download_html():
+    dirname = os.path.dirname(__file__)
+    filename = os.path.join(dirname, 'downloads/test.html')   
+    # return f'<h1>{filename}</h1>'
+    return send_file(filename, as_attachment=True, attachment_filename='statistics.html')
