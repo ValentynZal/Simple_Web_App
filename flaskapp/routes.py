@@ -15,6 +15,7 @@ from flaskapp.utils import (
 bp = Blueprint('routes', __name__)
 n = 0
 
+
 @bp.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
@@ -55,21 +56,33 @@ def index():
         return redirect(url_for('routes.process'))
     return render_template('index.html')
 
-@bp.route('/poll-process', methods=['POST', 'GET'])
+
+@bp.route('/poll-filters', methods=['POST', 'GET'])
 def process():
     form =  ChoiceForm(request.form)
     if request.method == 'POST':
+
         select = request.form.get('sel')  
         if select:
             print(select)
             db = get_db()
             res = db.execute(
             '''SELECT username, sex, city, emotion, month, poll_time
-                FROM poll
-                JOIN author
-                    ON poll.author_id = author.id
+                FROM poll p
+                JOIN author a
+                    ON p.author_id = a.id
                 ORDER BY %s''' % (select,)                  
             ).fetchall()
-            print(res) 
+            # print(res) 
             db.close
+                  
+        rad = request.form["radio"] 
+        if rad == 'csv':
+            print('csv function call') 
+            # converter(res)
+            # return redirect(url_for('routes.download'))
+        if rad == 'html':
+            print('html function call')  
     return render_template('process.html', form=form)
+
+    
