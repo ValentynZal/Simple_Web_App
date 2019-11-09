@@ -9,7 +9,7 @@ from flaskapp.db import get_db
 from flaskapp.form import ChoiceForm
 from flaskapp.utils import (
     text_to_emotion, timestamp_converter, csv_extracter, 
-    add_author_id 
+    add_author_id , save_as_csv
 )
 
 bp = Blueprint('routes', __name__)
@@ -79,7 +79,7 @@ def process():
         rad = request.form["radio"] 
         if rad == 'csv':
             print('csv function call') 
-            # converter(res)
+            save_as_csv(res)
             return redirect(url_for('routes.download_csv'))
         if rad == 'html':
             print('html function call') 
@@ -90,13 +90,11 @@ def process():
 @bp.route('/download-csv',methods=['GET'])
 def download_csv():
     dirname = os.path.dirname(__file__)
-    filename = os.path.join(dirname, 'downloads/TEST.csv')   
-    # return f'<h1>{filename}</h1>'
+    filename = os.path.join(dirname, 'downloads/statistics.csv')   
     return send_file(filename, as_attachment=True, attachment_filename='statistics.csv')
 
 @bp.route('/download-html',methods=['GET'])
 def download_html():
     dirname = os.path.dirname(__file__)
     filename = os.path.join(dirname, 'downloads/test.html')   
-    # return f'<h1>{filename}</h1>'
     return send_file(filename, as_attachment=True, attachment_filename='statistics.html')

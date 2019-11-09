@@ -47,3 +47,15 @@ def add_author_id(dict_list, poll_id, n):
     for i, dic in zip(get_list, dict_list):
         dic.update({'author_id': i}) 
     return dict_list
+
+
+def save_as_csv(lines):
+    dirname = os.path.dirname(__file__)
+    filename = os.path.join(dirname, 'downloads/statistics.csv') 
+    with open(filename, 'w') as new_csv:
+        fieldnames = ['username', 'sex', 'city', 'emotion', 'month', 'poll_time']
+        csv_writer = csv.DictWriter(new_csv, fieldnames=fieldnames)
+        csv_writer.writeheader()
+        for line in lines:
+            # print(line[0],line[1],line[2],line[3],line[4])
+            csv_writer.writerow({'username': line[0], 'sex': line[1], 'city': line[2], 'emotion': line[3], 'month': line[4], 'poll_time': line[5]})
