@@ -9,7 +9,7 @@ from flaskapp.db import get_db
 from flaskapp.form import ChoiceForm
 from flaskapp.utils import (
     text_to_emotion, timestamp_converter, csv_extracter, 
-    add_author_id , save_as_csv
+    add_author_id , save_as_csv, save_to_html
 )
 
 bp = Blueprint('routes', __name__)
@@ -78,11 +78,12 @@ def process():
                   
         rad = request.form["radio"] 
         if rad == 'csv':
-            print('csv function call') 
+            # print('csv function call') 
             save_as_csv(res)
             return redirect(url_for('routes.download_csv'))
         if rad == 'html':
             print('html function call') 
+            save_to_html(res, select)
             return redirect(url_for('routes.download_html'))
     return render_template('process.html', form=form)
 

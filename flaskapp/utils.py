@@ -59,3 +59,45 @@ def save_as_csv(lines):
         for line in lines:
             # print(line[0],line[1],line[2],line[3],line[4])
             csv_writer.writerow({'username': line[0], 'sex': line[1], 'city': line[2], 'emotion': line[3], 'month': line[4], 'poll_time': line[5]})
+
+
+def save_to_html(lines, field):
+    dirname = os.path.dirname(__file__)
+    filename = os.path.join(dirname, 'downloads/test.html')  
+    with open(filename, 'w') as new_html:
+        intro = '''
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>Document</title>
+        </head>
+        <body>
+            <h1>%s</h1>
+        ''' % field
+        new_html.write(intro)
+
+        for line in lines:
+            row = '''
+            <table>
+                <tr>
+                    <td>%s</td>
+                    <td>%s</td>
+                    <td>%s</td>
+                    <td>%s</td>
+                    <td>%s</td>
+                    <td>%s</td>
+                </tr>
+            </table>
+            ''' % (line[0], line[1], line[2], line[3], line[4], line[5])
+            new_html.write(row)
+
+        end = '''
+        </body>
+        </html>
+        '''
+        new_html.write(end)        
+        new_html.close()
+    pass
